@@ -9,19 +9,19 @@ import java.util.Random;
 
 @SpringBootTest
 class DriverRepositoryTest {
+
     @Autowired
     private DriverRepository driverRepository;
 
     @Test
-    public void insertDriver(){
-        Driver driver = new Driver();
+    public void findByName(){
+        Driver driver = new Driver("D. Kise");
         driver.setId(new Random().nextLong());
         driver.setLastName("Kise");
         driver.setFirstName("Derick");
         driver.setCountry("USA");
-        driver.setDisplayName("D. Kise");
         driverRepository.save(driver);
-        System.out.println(driverRepository.findByDisplayName("D. Kise"));
+        System.out.println(driverRepository.findByName("D. Kise"));
         System.out.println(driverRepository.findAll());
     }
 }

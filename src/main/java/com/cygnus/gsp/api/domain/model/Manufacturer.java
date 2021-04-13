@@ -4,18 +4,20 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "manufacturer")
 public class Manufacturer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(name = "common_name")
     private String commonName;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String abbreviation;
     private String country;
 
-    public Manufacturer() {
+    private Manufacturer() {
         super();
     }
 

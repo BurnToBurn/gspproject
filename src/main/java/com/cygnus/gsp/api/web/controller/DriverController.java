@@ -1,57 +1,45 @@
 package com.cygnus.gsp.api.web.controller;
 
 import com.cygnus.gsp.api.domain.model.Driver;
-import com.cygnus.gsp.api.exception.NotFoundException;
-import com.cygnus.gsp.api.persistance.repository.DriverRepository;
+import com.cygnus.gsp.api.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController()
 public class DriverController {
 
-    private final DriverRepository driverRepository;
+    private final DriverService driverService;
 
     @Autowired
-    public DriverController(DriverRepository driverRepository) {
-        this.driverRepository = driverRepository;
+    public DriverController(DriverService driverService) {
+        this.driverService = driverService;
     }
 
-    @GetMapping("/driver")
+    @GetMapping("/drivers")
     List<Driver> getAllDrivers(){
-        return driverRepository.findAll();
+        return driverService.getAllDrivers();
     }
 
-    @PostMapping("/driver")
-    Driver addDriver(@RequestBody Driver newDriver){
-        return driverRepository.save(newDriver);
-    }
-
-    @GetMapping("/driver/{id}")
-    Driver getDriver(@PathVariable Long id){
-        return driverRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Could not find driver " + id));
+    @GetMapping("/drivers/{id}")
+    Driver getDriver(@PathVariable("id") Long driverId){
+        return driverService.getDriverById(driverId);
 
     }
 
-    @PutMapping("/driver/{id}")
-    Driver replaceDriver(@RequestBody Driver newDriver, @PathVariable Long id){
-        return driverRepository.findById(id)
-                .map(driver -> {
-                    driver.setDisplayName(newDriver.getDisplayName());
-                    driver.setCountry(newDriver.getCountry());
-                    driver.setFirstName(newDriver.getFirstName());
-                    driver.setLastName(newDriver.getLastName());
-                    return driverRepository.save(driver);
-                }).orElseGet(() -> {
-                    newDriver.setId(id);
-                    return driverRepository.save(newDriver);
-                });
+    @PostMapping("/drivers")
+    Driver createDriver(@RequestBody Driver payload){
+        return driverService.createDriver(payload);
     }
 
-    @DeleteMapping("/driver/{id}")
-    void deleteDriver(@PathVariable Long id){
-        driverRepository.deleteById(id);
+    @PutMapping("/drivers/{id}")
+    Driver updateDriver(@RequestBody Driver payload, @PathVariable("id") Long driverId){
+        return driverService.updateDriverById(driverId,payload);
+    }
+
+    @DeleteMapping("/drivers/{id}")
+    void deleteDriver(@PathVariable("id") Long driverId){
+        driverService.deleteDriverById(driverId);
     }
 }

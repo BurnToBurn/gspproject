@@ -4,39 +4,38 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "driver")
 public class Driver {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false,unique = true)
+    private String name;
+    @Column(name = "first_name",nullable = false)
     private String firstName;
+    @Column(name = "last_name",nullable = false)
     private String lastName;
-    @Column(unique = true)
-    private String displayName;
+    @Column()
     private String country;
 
     public Driver() {
         super();
     }
 
-    public Driver(String displayName) {
-        this.displayName = displayName;
-        splitDisplayName(displayName);
-    }
-
-    public Driver(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.setDisplayName(firstName + " " + lastName);
+    public Driver(String name) {
+        this();
+        this.name = name;
+        splitName(name);
     }
 
     @Override
     public String toString() {
         return "Driver{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", displayName='" + displayName + '\'' +
                 ", country='" + country + '\'' +
                 '}';
     }
@@ -46,14 +45,12 @@ public class Driver {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Driver driver = (Driver) o;
-        return Objects.equals(firstName, driver.firstName) &&
-                Objects.equals(lastName, driver.lastName) &&
-                Objects.equals(displayName, driver.displayName);
+        return name.equals(driver.name) && firstName.equals(driver.firstName) && lastName.equals(driver.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, displayName);
+        return Objects.hash(name, firstName, lastName);
     }
 
     public Long getId() {
@@ -81,11 +78,7 @@ public class Driver {
     }
 
     public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+        return firstName + " " + lastName;
     }
 
     public String getCountry() {
@@ -96,13 +89,23 @@ public class Driver {
         this.country = country;
     }
 
-    private void splitDisplayName(String displayName){
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private void splitName(String displayName){
 
         if(displayName != null && displayName.length() > 0){
             String[] splitName = displayName.trim().split("\\s+");
             if(splitName.length > 1) {
                 this.firstName = splitName[0];
                 this.lastName = splitName[1];
+            }else {
+                throw new IllegalArgumentException();
             }
         }
     }
