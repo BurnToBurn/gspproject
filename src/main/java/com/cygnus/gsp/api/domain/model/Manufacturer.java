@@ -11,7 +11,7 @@ public class Manufacturer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Column(name = "common_name")
+    @Column(name = "common_name",nullable = false)
     private String commonName;
     @Column(unique = true, nullable = false)
     private String abbreviation;

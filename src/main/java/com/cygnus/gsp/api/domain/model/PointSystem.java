@@ -12,43 +12,39 @@ public class PointSystem {
         NONE,TOP,ALL
     }
 
-    public enum DropMethod {
-        NONE,HALF,FULL
-    }
-
-    public enum DropOrder {
-        DROP,KEEP
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String name;
-    private DropMethod dropMethod;
-    private DropOrder dropOrder;
-    private Integer dropCount;
+    @Column(nullable = false)
+    private DropSystem dropSystem;
     @ElementCollection
     private List<BigDecimal> positionPoints;
+    @Column(nullable = false)
     private BigDecimal fastLapPoint;
+    @Column(nullable = false)
     private BigDecimal polePoint;
+    @Column(nullable = false)
     private GroupCalculation manufacturerCalculation;
+    @Column(nullable = false)
     private Integer manufacturerCount;
 
     public PointSystem() {
         super();
+        this.dropSystem = new DropSystem();
+        this.manufacturerCalculation = GroupCalculation.ALL;
+        this.manufacturerCount = 1;
     }
     //TODO will need a point system builder
-    public PointSystem(String name, List<BigDecimal> positionPoints, BigDecimal fastLapPoint, BigDecimal polePoint) {
+    public PointSystem(String name, List<BigDecimal> positionPoints, BigDecimal fastLapPoint, BigDecimal polePoint,GroupCalculation manufacturerCalculation,Integer manufacturerCount,DropSystem dropSystem) {
         this.name = name;
-        this.dropMethod = DropMethod.NONE;
-        this.dropOrder = DropOrder.DROP;
-        this.dropCount = 0;
         this.positionPoints = positionPoints;
         this.fastLapPoint = fastLapPoint;
         this.polePoint = polePoint;
-        this.manufacturerCalculation = GroupCalculation.ALL;
-        this.manufacturerCount = 1;
+        this.manufacturerCalculation = manufacturerCalculation;
+        this.manufacturerCount = manufacturerCount;
+        this.dropSystem = dropSystem;
     }
 
     @Override
@@ -56,12 +52,10 @@ public class PointSystem {
         return "PointSystem{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", dropMethod=" + dropMethod +
-                ", dropOrder=" + dropOrder +
-                ", dropCount=" + dropCount +
+                ", dropSystem=" + dropSystem +
                 ", positionPoints=" + positionPoints +
-                ", fastLapPoints=" + fastLapPoint +
-                ", polePoints=" + polePoint +
+                ", fastLapPoint=" + fastLapPoint +
+                ", polePoint=" + polePoint +
                 ", manufacturerCalculation=" + manufacturerCalculation +
                 ", manufacturerCount=" + manufacturerCount +
                 '}';
@@ -96,30 +90,6 @@ public class PointSystem {
         this.name = name;
     }
 
-    public DropMethod getDropMethod() {
-        return dropMethod;
-    }
-
-    public void setDropMethod(DropMethod dropMethod) {
-        this.dropMethod = dropMethod;
-    }
-
-    public DropOrder getDropOrder() {
-        return dropOrder;
-    }
-
-    public void setDropOrder(DropOrder dropOrder) {
-        this.dropOrder = dropOrder;
-    }
-
-    public Integer getDropCount() {
-        return dropCount;
-    }
-
-    public void setDropCount(Integer dropCount) {
-        this.dropCount = dropCount;
-    }
-
     public List<BigDecimal> getPositionPoints() {
         return positionPoints;
     }
@@ -150,6 +120,14 @@ public class PointSystem {
 
     public void setManufacturerCalculation(GroupCalculation manufacturerCalculation) {
         this.manufacturerCalculation = manufacturerCalculation;
+    }
+
+    public DropSystem getDropSystem() {
+        return dropSystem;
+    }
+
+    public void setDropSystem(DropSystem dropSystem) {
+        this.dropSystem = dropSystem;
     }
 
     public Integer getManufacturerCount() {
