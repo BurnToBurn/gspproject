@@ -5,16 +5,17 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 public class TimedPosition extends Position{
 
-    public enum Type{
+    enum Type{
         FASTLAP,POLE;
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private LocalTime timing;
     private Type positionType;
 
@@ -22,7 +23,7 @@ public class TimedPosition extends Position{
         super();
     }
 
-    public TimedPosition(Driver driver, Manufacturer manufacturer, LocalTime timing, Type positionType) {
+    public TimedPosition(Driver driver, Manufacturer manufacturer, LocalTime timing,Type positionType) {
         super(driver, manufacturer);
         this.timing = timing;
         this.positionType = positionType;
@@ -31,7 +32,7 @@ public class TimedPosition extends Position{
     @Override
     public String toString() {
         return "TimedPosition{" +
-                "Id=" + id +
+                "id=" + id +
                 ", timing=" + timing +
                 ", positionType=" + positionType +
                 "} " + super.toString();

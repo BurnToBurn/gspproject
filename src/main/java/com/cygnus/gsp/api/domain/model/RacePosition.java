@@ -8,8 +8,9 @@ import java.util.Objects;
 public class RacePosition extends Position{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "position",nullable = false)
     private Integer positionNbr;
 
     public RacePosition() {

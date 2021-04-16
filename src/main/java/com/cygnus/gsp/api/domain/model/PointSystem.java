@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name="point_system")
 public class PointSystem {
 
     public enum GroupCalculation{
@@ -17,7 +18,8 @@ public class PointSystem {
     private Long id;
     @Column(unique = true)
     private String name;
-    @Column(nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drop_system_Id",nullable = false)
     private DropSystem dropSystem;
     @ElementCollection
     private List<BigDecimal> positionPoints;

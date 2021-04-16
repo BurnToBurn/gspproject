@@ -2,10 +2,12 @@ package com.cygnus.gsp.api.domain.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name="race")
 public class Race {
 
     public enum Mode{
@@ -24,15 +26,15 @@ public class Race {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String raceName;
-    private LocalDateTime raceDate;
-    private Mode  raceMode;
+    private String name;
+    private LocalDateTime dateTime;
+    private Mode mode;
     @ManyToOne
     @JoinColumn(name = "trackId")
     private Track track;
-    private Integer nbrOfLaps;
+    private Integer laps;
     @OneToOne(fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name = "fastLapPositionId")
     private TimedPosition fastLapPosition;
@@ -45,25 +47,26 @@ public class Race {
 
     public Race() {
         super();
+        this.laps = 0;
     }
 
-    public Race(String raceName, LocalDateTime raceDate, Mode raceMode, Track track, Integer nbrOfLaps) {
-        this.raceName = raceName;
-        this.raceDate = raceDate;
-        this.raceMode = raceMode;
+    public Race(String name, LocalDateTime dateTime, Mode mode, Track track, Integer laps) {
+        this.name = name;
+        this.dateTime = dateTime;
+        this.mode = mode;
         this.track = track;
-        this.nbrOfLaps = nbrOfLaps;
+        this.laps = laps;
     }
 
     @Override
     public String toString() {
         return "Race{" +
                 "id=" + id +
-                ", raceName='" + raceName + '\'' +
-                ", raceDate=" + raceDate +
-                ", raceMode=" + raceMode +
+                ", raceName='" + name + '\'' +
+                ", raceDate=" + dateTime +
+                ", raceMode=" + mode +
                 ", track=" + track +
-                ", nbrOfLaps=" + nbrOfLaps +
+                ", nbrOfLaps=" + laps +
                 ", fastestLapPosition=" + fastLapPosition +
                 ", polePosition=" + polePosition +
                 ", racePositionList=" + racePositionList +
@@ -75,15 +78,15 @@ public class Race {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Race race = (Race) o;
-        return Objects.equals(raceName, race.raceName) &&
-                Objects.equals(raceDate, race.raceDate) &&
-                raceMode == race.raceMode &&
+        return Objects.equals(name, race.name) &&
+                Objects.equals(dateTime, race.dateTime) &&
+                mode == race.mode &&
                 Objects.equals(track, race.track);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(raceName, raceDate, raceMode, track);
+        return Objects.hash(name, dateTime, mode, track);
     }
 
     public Long getId() {
@@ -94,28 +97,28 @@ public class Race {
         this.id = id;
     }
 
-    public String getRaceName() {
-        return raceName;
+    public String getName() {
+        return name;
     }
 
-    public void setRaceName(String raceName) {
-        this.raceName = raceName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public LocalDateTime getRaceDate() {
-        return raceDate;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setRaceDate(LocalDateTime raceDate) {
-        this.raceDate = raceDate;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
-    public Mode getRaceMode() {
-        return raceMode;
+    public Mode getMode() {
+        return mode;
     }
 
-    public void setRaceMode(Mode raceMode) {
-        this.raceMode = raceMode;
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
 
     public Track getTrack() {
@@ -126,12 +129,12 @@ public class Race {
         this.track = track;
     }
 
-    public Integer getNbrOfLaps() {
-        return nbrOfLaps;
+    public Integer getLaps() {
+        return laps;
     }
 
-    public void setNbrOfLaps(Integer nbrOfLaps) {
-        this.nbrOfLaps = nbrOfLaps;
+    public void setLaps(Integer laps) {
+        this.laps = laps;
     }
 
     public TimedPosition getFastLapPosition() {
@@ -151,6 +154,9 @@ public class Race {
     }
 
     public List<RacePosition> getRacePositionList() {
+        if(racePositionList == null){
+            this.racePositionList = new ArrayList<>();
+        }
         return racePositionList;
     }
 

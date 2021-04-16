@@ -2,9 +2,11 @@ package com.cygnus.gsp.api.domain.model;
 
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import java.util.Objects;
 
+@MappedSuperclass
 public abstract class Position {
 
     @OneToOne(fetch = FetchType.LAZY)

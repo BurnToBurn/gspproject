@@ -1,6 +1,7 @@
 package com.cygnus.gsp.api.domain.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,11 +9,11 @@ import java.util.Objects;
 public class Season {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "raceId")
+    @ElementCollection
     private List<Race> raceList;
     private Integer scheduledRaces;
     @ManyToOne
@@ -75,11 +76,14 @@ public class Season {
     }
 
     public void setRaceList(List<Race> raceList) {
+        if(raceList == null){
+            this.raceList = new ArrayList<>();
+        }
         this.raceList = raceList;
     }
 
     public Integer getScheduledRaces() {
-        if(raceList != null && raceList.size() > scheduledRaces){
+        if(getRaceList().size() > scheduledRaces){
             this.scheduledRaces = raceList.size();
         }
         return scheduledRaces;

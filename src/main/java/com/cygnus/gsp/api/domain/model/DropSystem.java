@@ -1,11 +1,10 @@
 package com.cygnus.gsp.api.domain.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "drop_system")
 public class DropSystem {
 
     public enum Method {
@@ -19,24 +18,24 @@ public class DropSystem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(name = "drop_method",nullable = false)
     private Method method;
-    @Column(nullable = false)
+    @Column(name = "drop_order",nullable = false)
     private Order order;
-    @Column(nullable = false)
-    private Integer dropCount;
+    @Column(name = "drop_count", nullable = false)
+    private Integer count;
 
     public DropSystem() {
         super();
         this.method = Method.NONE;
         this.order = Order.DROP;
-        this.dropCount = 0;
+        this.count = 0;
     }
 
-    public DropSystem(Method method, Order order, Integer dropCount) {
+    public DropSystem(Method method, Order order, Integer count) {
         this.method = method;
         this.order = order;
-        this.dropCount = dropCount;
+        this.count = count;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class DropSystem {
                 "id=" + id +
                 ", method=" + method +
                 ", order=" + order +
-                ", dropCount=" + dropCount +
+                ", count=" + count +
                 '}';
     }
 
@@ -54,12 +53,12 @@ public class DropSystem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DropSystem that = (DropSystem) o;
-        return method == that.method && order == that.order && dropCount.equals(that.dropCount);
+        return method == that.method && order == that.order && count.equals(that.count);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(method, order, dropCount);
+        return Objects.hash(method, order, count);
     }
 
     public Long getId() {
@@ -86,11 +85,11 @@ public class DropSystem {
         this.order = order;
     }
 
-    public Integer getDropCount() {
-        return dropCount;
+    public Integer getCount() {
+        return count;
     }
 
-    public void setDropCount(Integer dropCount) {
-        this.dropCount = dropCount;
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }
