@@ -18,25 +18,25 @@ public class SeasonController {
         this.seasonRepository = seasonRepository;
     }
 
-    @GetMapping("/season")
-    List<Season> getAllSeasons(){
+    @GetMapping("/seasons")
+    public List<Season> getAllSeasons(){
         return seasonRepository.findAll();
     }
 
-    @PostMapping("/season")
-    Season addSeason(@RequestBody Season newSeason){
+    @PostMapping("/seasons")
+    public Season addSeason(@RequestBody Season newSeason){
         return seasonRepository.save(newSeason);
     }
 
-    @GetMapping("/season/{id}")
-    Season getSeason(@PathVariable Long id){
+    @GetMapping("/seasons/{id}")
+    public Season getSeason(@PathVariable Long id){
         return seasonRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Could not find season " + id));
 
     }
 
-    @PutMapping("/season/{id}")
-    Season replaceSeason(@RequestBody Season newSeason, @PathVariable Long id){
+    @PutMapping("/seasons/{id}")
+    public Season replaceSeason(@RequestBody Season newSeason, @PathVariable Long id){
         return seasonRepository.findById(id)
                 .map(season -> {
                     season.setName(newSeason.getName());
@@ -45,13 +45,13 @@ public class SeasonController {
                     season.setScheduledRaces(newSeason.getScheduledRaces());
                     return seasonRepository.save(season);
                 }).orElseGet(() -> {
-                    newSeason.setId(id);
+                    newSeason.setSeasonId(id);
                     return seasonRepository.save(newSeason);
                 });
     }
 
-    @DeleteMapping("/season/{id}")
-    void deleteSeason(@PathVariable Long id){
+    @DeleteMapping("/seasons/{id}")
+    public void deleteSeason(@PathVariable Long id){
         seasonRepository.deleteById(id);
     }
 }

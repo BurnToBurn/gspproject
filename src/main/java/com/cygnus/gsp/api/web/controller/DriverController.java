@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController()
+@RestController
 public class DriverController {
 
     private final DriverService driverService;
@@ -18,28 +18,33 @@ public class DriverController {
     }
 
     @GetMapping("/drivers")
-    List<Driver> getAllDrivers(){
+    public List<Driver> getAllDrivers(){
         return driverService.getAllDrivers();
     }
 
     @GetMapping("/drivers/{id}")
-    Driver getDriver(@PathVariable("id") Long driverId){
+    public Driver getDriverById(@PathVariable("id") Long driverId){
         return driverService.getDriverById(driverId);
 
     }
 
+    @GetMapping("/drivers/{name}")
+    public Driver getDriverByName(@PathVariable("name") String driverName){
+        return driverService.getDriverByName(driverName);
+    }
+
     @PostMapping("/drivers")
-    Driver createDriver(@RequestBody Driver payload){
-        return driverService.createDriver(payload);
+    public Driver createDriver(@RequestBody Driver driver){
+        return driverService.createDriver(driver);
     }
 
     @PutMapping("/drivers/{id}")
-    Driver updateDriver(@RequestBody Driver payload, @PathVariable("id") Long driverId){
+    public Driver updateDriver(@RequestBody Driver payload, @PathVariable("id") Long driverId){
         return driverService.updateDriverById(driverId,payload);
     }
 
     @DeleteMapping("/drivers/{id}")
-    void deleteDriver(@PathVariable("id") Long driverId){
+    public void deleteDriver(@PathVariable("id") Long driverId){
         driverService.deleteDriverById(driverId);
     }
 }

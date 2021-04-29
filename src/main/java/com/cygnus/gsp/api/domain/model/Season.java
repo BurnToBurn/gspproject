@@ -1,6 +1,8 @@
 package com.cygnus.gsp.api.domain.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,12 +12,15 @@ public class Season {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long seasonId;
+    @NotNull
     private String name;
-    @OneToMany(orphanRemoval = true)
-    @ElementCollection
+    @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true)
+    @JoinColumn(name = "raceId")
     private List<Race> raceList;
+    @Min(0)
     private Integer scheduledRaces;
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "pointSystemId")
     private PointSystem pointSystem;
@@ -24,16 +29,15 @@ public class Season {
         super();
     }
 
-    public Season(String name, Integer scheduledRaces, PointSystem pointSystem) {
+    public Season(@NotNull String name,@NotNull PointSystem pointSystem) {
         this.name = name;
-        this.scheduledRaces = scheduledRaces;
         this.pointSystem = pointSystem;
     }
 
     @Override
     public String toString() {
         return "Season{" +
-                "id=" + id +
+                "id=" + seasonId +
                 ", name='" + name + '\'' +
                 ", raceList=" + raceList +
                 ", scheduledRaces=" + scheduledRaces +
@@ -55,12 +59,12 @@ public class Season {
         return Objects.hash(name, pointSystem);
     }
 
-    public Long getId() {
-        return id;
+    public Long getSeasonId() {
+        return seasonId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSeasonId(Long seasonId) {
+        this.seasonId = seasonId;
     }
 
     public String getName() {
@@ -72,13 +76,15 @@ public class Season {
     }
 
     public List<Race> getRaceList() {
+
+        if(raceList == null){
+            this.raceList = new ArrayList<>();
+        }
+
         return raceList;
     }
 
     public void setRaceList(List<Race> raceList) {
-        if(raceList == null){
-            this.raceList = new ArrayList<>();
-        }
         this.raceList = raceList;
     }
 
@@ -86,10 +92,14 @@ public class Season {
         if(getRaceList().size() > scheduledRaces){
             this.scheduledRaces = raceList.size();
         }
+
         return scheduledRaces;
     }
 
-    public void setScheduledRaces(Integer scheduledRaces) {
+    public void setScheduledRaces(@NotNull Integer scheduledRaces) {
+        if(scheduledRaces == null || scheduledRaces < 0){
+            scheduledRaces = 0;
+        }
         this.scheduledRaces = scheduledRaces;
     }
 

@@ -1,6 +1,7 @@
-package com.cygnus.gsp.api.domain.model;
+package com.cygnus.gsp.trackmanager.domain.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -20,20 +21,24 @@ public class Track {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long trackId;
+    @NotNull
     private String name;
+    @NotNull
     @Column(unique = true)
     private String commonName;
     private String location;
     private String country;
     private Surface surface;
-    private Integer nbrOfTurns;
+    private Integer turns;
 
     public Track() {
         super();
+        this.surface = Surface.ASPHALT;
     }
 
-    public Track(String name, String commonName) {
+    public Track(@NotNull String name, @NotNull String commonName) {
+        this();
         this.name = name;
         this.commonName = commonName;
     }
@@ -41,13 +46,13 @@ public class Track {
     @Override
     public String toString() {
         return "Track{" +
-                "id=" + id +
+                "id=" + trackId +
                 ", name='" + name + '\'' +
                 ", commonName='" + commonName + '\'' +
                 ", location='" + location + '\'' +
                 ", country='" + country + '\'' +
                 ", surface=" + surface +
-                ", nbrOfTurns=" + nbrOfTurns +
+                ", nbrOfTurns=" + turns +
                 '}';
     }
 
@@ -64,12 +69,12 @@ public class Track {
         return Objects.hash(commonName);
     }
 
-    public Long getId() {
-        return id;
+    public Long getTrackId() {
+        return trackId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTrackId(Long trackId) {
+        this.trackId = trackId;
     }
 
     public String getName() {
@@ -112,11 +117,11 @@ public class Track {
         this.surface = surface;
     }
 
-    public Integer getNbrOfTurns() {
-        return nbrOfTurns;
+    public Integer getTurns() {
+        return turns;
     }
 
-    public void setNbrOfTurns(Integer nbrOfTurns) {
-        this.nbrOfTurns = nbrOfTurns;
+    public void setTurns(Integer turns) {
+        this.turns = turns;
     }
 }

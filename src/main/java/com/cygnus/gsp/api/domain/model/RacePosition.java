@@ -1,62 +1,40 @@
 package com.cygnus.gsp.api.domain.model;
 
+import lombok.*;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(exclude = {"racePositionId"},callSuper = true)
+@Accessors(chain = true)
+@NoArgsConstructor
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class RacePosition extends Position{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long racePositionId;
+    @Min(1)
+    @NotNull
     @Column(name = "position",nullable = false)
     private Integer positionNbr;
 
-    public RacePosition() {
-        super();
-    }
-
-    public RacePosition(Driver driver, Manufacturer manufacturer, Integer positionNbr) {
+    public RacePosition(@NotNull Driver driver,@NotNull Manufacturer manufacturer,@NotNull Integer positionNbr) {
         super(driver, manufacturer);
         this.positionNbr = positionNbr;
     }
 
-    @Override
-    public String toString() {
-        return "RacePosition{" +
-                "id=" + id +
-                ", positionNbr=" + positionNbr +
-                "} " + super.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        RacePosition that = (RacePosition) o;
-        return Objects.equals(positionNbr, that.positionNbr);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), positionNbr);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getPositionNbr() {
-        return positionNbr;
-    }
-
-    public void setPositionNbr(Integer positionNbr) {
+    public void setPositionNbr(@NotNull Integer positionNbr) {
+        if(positionNbr == null || positionNbr < 1){
+            positionNbr = 1;
+        }
         this.positionNbr = positionNbr;
     }
 }
