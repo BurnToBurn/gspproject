@@ -23,32 +23,27 @@ public class Driver implements Serializable {
     private Long driverId;
     @NotNull
     @Column(nullable = false,unique = true)
-    private String name;
+    private String inputName;
     @Min(1)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String firstName;
     @Min(1)
-    @Column(nullable = false)
+    @Column(nullable = true)
+    private String middleName;
+    @Min(1)
+    @Column(nullable = true)
     private String lastName;
+    @Min(1)
+    @Column(nullable = true)
+    private String generationCode;
+    @Min(1)
+    @Column(nullable = true)
     private String country;
 
-    public Driver(@NotNull String name) {
-        this.name = name;
-        splitName(name);
-    }
-
-    void splitName(String displayName){
-
-       if(displayName != null && displayName.length() > 0){
-            String[] splitName = displayName.split("\\s+|\\.",2);
-            if(splitName.length > 1) {
-                this.firstName = splitName[0].trim();
-                this.lastName = splitName[1].trim();
-            }else {
-                this.firstName = displayName;
-            }
-        }else {
-           throw new IllegalArgumentException();
-       }
+    public String getDisplayName() {
+        if (firstName != null && lastName != null && !firstName.isEmpty() && !lastName.isEmpty())
+            return firstName + " " + middleName + " " + lastName + " " + generationCode;
+        else
+            return inputName;
     }
 }
