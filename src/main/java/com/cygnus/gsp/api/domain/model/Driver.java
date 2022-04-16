@@ -46,4 +46,17 @@ public class Driver implements Serializable {
         else
             return inputName;
     }
+
+    private void splitName(String inputName){
+
+        if(inputName != null && inputName.length() > 0){
+            String[] splitName = inputName.trim().split("\\s+");
+            if(splitName.length > 1) {
+                this.firstName = splitName[0];
+                this.lastName = splitName[1];
+            }else {
+                throw new IllegalArgumentException();
+            }
+        }
+    }
 }
