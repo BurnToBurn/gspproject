@@ -1,6 +1,6 @@
-package com.cygnus.gsp.trackmanager.persistance.repository;
+package com.cygnus.gsp.api.persistance.repository;
 
-import com.cygnus.gsp.trackmanager.domain.model.Track;
+import com.cygnus.gsp.api.domain.model.Track;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

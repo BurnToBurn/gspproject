@@ -2,19 +2,18 @@ package com.cygnus.gsp.api.domain.model;
 
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @Getter
 @Setter
 @ToString
-@Builder
 @EqualsAndHashCode(exclude = {"pointSystemId","dropSystem","positionPoints","fastLapPoint","polePoint","manufacturerCalculation","manufacturerCount"})
 @Accessors(chain = true)
 @NoArgsConstructor
@@ -81,8 +80,7 @@ public class PointSystem {
                     .mapToObj(item -> getPositionPoints().get(item))
                     .findFirst()
                     .orElse(new BigDecimal(0));
-        }
-        else{
+        } else{
             return new BigDecimal(0);
         }
     }

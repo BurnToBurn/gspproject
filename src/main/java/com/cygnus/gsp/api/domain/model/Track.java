@@ -1,4 +1,4 @@
-package com.cygnus.gsp.trackmanager.domain.model;
+package com.cygnus.gsp.api.domain.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,7 +15,7 @@ public class Track {
         GRASS,
         ICE,
         SAND,
-        WOOD;
+        WOOD
     }
 
 

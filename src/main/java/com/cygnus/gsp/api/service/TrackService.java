@@ -1,8 +1,8 @@
-package com.cygnus.gsp.trackmanager.service;
+package com.cygnus.gsp.api.service;
 
+import com.cygnus.gsp.api.domain.model.Track;
 import com.cygnus.gsp.api.exception.NotFoundException;
-import com.cygnus.gsp.trackmanager.domain.model.Track;
-import com.cygnus.gsp.trackmanager.persistance.repository.TrackRepository;
+import com.cygnus.gsp.api.persistance.repository.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
