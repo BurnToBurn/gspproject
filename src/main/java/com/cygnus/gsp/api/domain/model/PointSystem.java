@@ -1,20 +1,19 @@
 package com.cygnus.gsp.api.domain.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode(exclude = {"pointSystemId","dropSystem","positionPoints","fastLapPoint","polePoint","manufacturerCalculation","manufacturerCount"})
 @Accessors(chain = true)
 @NoArgsConstructor
 @Entity
@@ -22,7 +21,7 @@ import java.util.stream.IntStream;
 public class PointSystem {
 
     public enum GroupCalculation{
-        NONE,TOP,ALL
+        TOP,ALL
     }
 
     @Id
@@ -30,58 +29,44 @@ public class PointSystem {
     private Long pointSystemId;
     @NotNull
     @Column(unique = true)
-    private String name;
+    private String pointSystemName;
     @NotNull
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drop_system_Id",nullable = false)
     private DropSystem dropSystem;
     @NotNull
     @ElementCollection
-    private List<BigDecimal> positionPoints;
+    private HashMap<Integer,BigDecimal> positionPointMap;
     @NotNull
     @Min(0)
     @Column(nullable = false)
-    private BigDecimal fastLapPoint;
+    private BigDecimal fastestLapPoint = BigDecimal.ZERO;
     @NotNull
     @Min(0)
     @Column(nullable = false)
-    private BigDecimal polePoint;
+    private BigDecimal polePoint = BigDecimal.ZERO;
     @NotNull
     @Column(nullable = false)
-    private GroupCalculation manufacturerCalculation;
+    private GroupCalculation manufacturerCalculation = GroupCalculation.TOP;
     @NotNull
+    @Min(1)
     @Column(nullable = false)
-    private Integer manufacturerCount;
+    private Integer manufacturerCount = 1;
 
     //TODO will need a point system builder
-    public PointSystem(String name, List<BigDecimal> positionPoints, BigDecimal fastLapPoint, BigDecimal polePoint,GroupCalculation manufacturerCalculation,Integer manufacturerCount,DropSystem dropSystem) {
-        this.name = name;
-        this.positionPoints = positionPoints;
-        this.fastLapPoint = fastLapPoint;
-        this.polePoint = polePoint;
-        this.manufacturerCalculation = manufacturerCalculation;
-        this.manufacturerCount = manufacturerCount;
-        this.dropSystem = dropSystem;
+
+
+    public HashMap<Integer, BigDecimal> getPositionPointMap() {
+        if(positionPointMap == null){
+            this.positionPointMap = new HashMap<>();
+        }
+        return positionPointMap;
     }
 
-    public List<BigDecimal> getPositionPoints() {
-        if(positionPoints == null){
-            this.positionPoints = new ArrayList<>();
-        }
-        return positionPoints;
-    }
-
-    public BigDecimal getPositionPoint(@NotNull @Min(1) Integer positionNbr){
-
-        if(positionNbr != null) {
-            return IntStream
-                    .range(0, getPositionPoints().size())
-                    .filter(i -> i == positionNbr - 1)
-                    .mapToObj(item -> getPositionPoints().get(item))
-                    .findFirst()
-                    .orElse(new BigDecimal(0));
-        } else{
-            return new BigDecimal(0);
-        }
+    public BigDecimal getPointPosition(Integer rank){
+        return this.positionPointMap.entrySet().stream()
+                .filter(key -> key.getKey().equals(rank))
+                .map(Map.Entry::getValue)
+                .findFirst().orElse(BigDecimal.ZERO);
     }
 }

@@ -1,6 +1,9 @@
 package com.cygnus.gsp.api.domain.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -17,11 +20,11 @@ import javax.validation.constraints.NotNull;
 public class DropSystem {
 
     public enum Method {
-        NONE,HALF,FULL
+        HALF,FULL
     }
 
     public enum Order {
-        D,K
+        DROP,KEEP
     }
 
     @Id
@@ -29,14 +32,14 @@ public class DropSystem {
     private Long dropSystemId;
     @NotNull
     @Column(nullable = false)
-    private Method dropMethod;
+    private Method dropMethod = Method.FULL;
     @NotNull
     @Column(nullable = false)
-    private Order dropOrder;
+    private Order dropOrder = Order.DROP;
     @Min(0)
     @NotNull
     @Column(nullable = false)
-    private Integer dropCount;
+    private Integer dropCount = 0;
 
 
     public DropSystem(Method dropMethod, Order dropOrder, Integer dropCount) {
