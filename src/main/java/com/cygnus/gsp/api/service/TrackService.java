@@ -38,17 +38,18 @@ public class TrackService {
     public Track updateTrackById(@RequestBody @NotNull Track track, @PathVariable @NotNull Long id){
         return trackRepository.findById(id)
                 .map(newTrack -> {
-                    newTrack.setCommonName(track.getCommonName());
+                    newTrack.setInputName(track.getInputName());
                     newTrack.setCountry(track.getCountry());
-                    newTrack.setLocation(track.getLocation());
-                    newTrack.setName(track.getName());
                     newTrack.setTurns(track.getTurns());
                     newTrack.setSurface(track.getSurface());
+                    newTrack.setFullName(track.getFullName());
+                    newTrack.setLayout(track.getLayout());
                     return trackRepository.save(track);
                 }).orElseThrow(() -> new NotFoundException("No matching track was found"));
     }
 
-    public void deleteTrackById(@PathVariable @NotNull Long id){
-        trackRepository.deleteById(id);
+    public void deleteTrackById(@PathVariable @NotNull Long trackId){
+        trackRepository.findById(trackId).orElseThrow(() -> new NotFoundException("No matching race was found"));
+        trackRepository.deleteById(trackId);
     }
 }

@@ -28,11 +28,6 @@ public class DriverController {
 
     }
 
-    @GetMapping("/drivers/{name}")
-    public Driver getDriverByName(@PathVariable("name") String driverName){
-        return driverService.getDriverByName(driverName);
-    }
-
     @PostMapping("/drivers")
     public Driver createDriver(@RequestBody Driver driver){
         return driverService.createDriver(driver);

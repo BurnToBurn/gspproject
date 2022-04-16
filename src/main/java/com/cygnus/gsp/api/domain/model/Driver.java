@@ -38,6 +38,7 @@ public class Driver implements Serializable {
     private String generationCode;
     @Min(1)
     private String country;
+    private Integer driverNumber;
 
     public String getDisplayName() {
         if (firstName != null && lastName != null)

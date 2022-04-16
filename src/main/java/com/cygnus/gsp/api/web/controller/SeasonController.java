@@ -39,10 +39,10 @@ public class SeasonController {
     public Season replaceSeason(@RequestBody Season newSeason, @PathVariable Long id){
         return seasonRepository.findById(id)
                 .map(season -> {
-                    season.setName(newSeason.getName());
+                    season.setSeasonName(newSeason.getSeasonName());
                     season.setPointSystem(newSeason.getPointSystem());
                     season.setRaceList(newSeason.getRaceList());
-                    season.setScheduledRaces(newSeason.getScheduledRaces());
+                    season.setScheduledEvents(newSeason.getScheduledEvents());
                     return seasonRepository.save(season);
                 }).orElseGet(() -> {
                     newSeason.setSeasonId(id);

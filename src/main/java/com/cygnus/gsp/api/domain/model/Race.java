@@ -1,19 +1,23 @@
 package com.cygnus.gsp.api.domain.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(exclude = {"raceId","trackId","laps","fastLapPosition","polePosition","racePositionList"})
 @Accessors(chain = true)
 @NoArgsConstructor
 @Entity
@@ -21,8 +25,12 @@ import java.util.List;
 public class Race {
 
     public enum Mode{
+        NOVICE("Novice"),
         ISHORT("Intermediate - Short"),
-        ILONG("Intermediate - Long");
+        ILONG("Intermediate - Long"),
+        PSHORT("Pro - Short"),
+        PLONG("Pro - Long"),
+        GRANDPRIX("Grand Prix");
 
         private final String description;
         Mode(String description) {
@@ -39,43 +47,46 @@ public class Race {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long raceId;
     @NotNull
-    private String name;
-    @NotNull
-    private LocalDateTime dateTime;
-    @NotNull
+    @Min(1)
+    private Integer round;
+    @ManyToOne
+    @JoinColumn(name = "track_id")
+    private Track track;
     private Mode mode;
+    private LocalDate date;
+    @OneToOne
+    @JoinColumn(name = "fastest_lap_position_id")
+    private FastestLap fastestLap;
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private List<QualifiedPosition> qualifiedPositionList;
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private List<FinishedPosition> finishedPositionList;
     @NotNull
-    private Long trackId;
-    @Min(0)
+    @Min(1)
     private Integer laps;
-    @OneToOne(fetch = FetchType.LAZY,orphanRemoval = true)
-    @JoinColumn(name = "fastLapPositionId")
-    private TimedPosition fastLapPosition;
-    @OneToOne(fetch = FetchType.LAZY,orphanRemoval = true)
-    @JoinColumn(name = "polePositionId")
-    private TimedPosition polePosition;
-    @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true)
-    @JoinColumn(name = "racePositionId")
-    private List<RacePosition> racePositionList;
+    private LocalTime time;
 
-    public Race(@NotNull String name,@NotNull LocalDateTime dateTime,@NotNull Mode mode) {
-        this.name = name;
-        this.dateTime = dateTime;
-        this.mode = mode;
+
+    public List<QualifiedPosition> getQualifiedPositionList() {
+        if(qualifiedPositionList == null){
+            this.qualifiedPositionList = new ArrayList<>();
+        }
+        return qualifiedPositionList;
     }
 
-    public void setLaps(Integer laps) {
-        if(laps == null || laps < 0){
-            laps = 0;
+    public List<FinishedPosition> getFinishedPositionList() {
+        if(finishedPositionList == null){
+            this.finishedPositionList = new ArrayList<>();
         }
-        this.laps = laps;
+        return finishedPositionList;
     }
 
-    public List<RacePosition> getRacePositionList() {
-        if(racePositionList == null){
-            this.racePositionList = new ArrayList<>();
-        }
-        return racePositionList;
+    public Optional<QualifiedPosition> getPolePosition(){
+        return this.getQualifiedPositionList().stream()
+                .filter(position -> position.getRank() == 1)
+                .findFirst();
     }
 
 }

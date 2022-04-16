@@ -28,11 +28,6 @@ public class DriverService {
                 .orElseThrow(() -> new NotFoundException("No matching driver was found"));
     }
 
-    public Driver getDriverByName(@NotNull String driverName){
-        return driverRepository.findByName(driverName)
-                .orElseThrow(() -> new NotFoundException("No matching driver was found"));
-    }
-
     public Driver createDriver(@NotNull Driver driver){
         return driverRepository.save(driver);
     }

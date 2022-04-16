@@ -35,18 +35,20 @@ public class RaceService {
         return raceRepository.findById(raceId)
                 .map(newRace -> {
                     newRace.setLaps(race.getLaps());
-                    newRace.setTrackId(race.getTrackId());
-                    newRace.setName(race.getName());
-                    newRace.setDateTime(race.getDateTime());
-                    newRace.setFastLapPosition(race.getFastLapPosition());
                     newRace.setMode(race.getMode());
-                    newRace.setPolePosition(race.getPolePosition());
-                    newRace.setRacePositionList(race.getRacePositionList());
+                    newRace.setDate(race.getDate());
+                    newRace.setFastestLap(race.getFastestLap());
+                    newRace.setFinishedPositionList(race.getFinishedPositionList());
+                    newRace.setQualifiedPositionList(race.getQualifiedPositionList());
+                    newRace.setRound(race.getRound());
+                    newRace.setTime(race.getTime());
+                    newRace.setTrack(race.getTrack());
                     return raceRepository.save(newRace);
                 }).orElseThrow(() -> new NotFoundException("No matching race was found"));
     }
 
     public void deleteRaceById(Long raceId){
         raceRepository.findById(raceId).orElseThrow(() -> new NotFoundException("No matching race was found"));
+        raceRepository.deleteById(raceId);
     }
 }
