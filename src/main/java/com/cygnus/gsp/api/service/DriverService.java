@@ -44,7 +44,9 @@ public class DriverService {
                     newDriver.setCountry(driver.getCountry());
                     newDriver.setFirstName(driver.getFirstName());
                     newDriver.setLastName(driver.getLastName());
-                    newDriver.setName(driver.getName());
+                    newDriver.setMiddleName(driver.getMiddleName());
+                    newDriver.setGenerationCode(driver.getGenerationCode());
+                    newDriver.setInputName(driver.getInputName());
                     return driverRepository.save(newDriver);
                 }).orElseThrow(() -> new NotFoundException("No matching driver was found"));
 

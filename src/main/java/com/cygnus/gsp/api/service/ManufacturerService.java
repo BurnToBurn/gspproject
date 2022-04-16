@@ -27,13 +27,10 @@ public class ManufacturerService {
                 .orElseThrow(() -> new NotFoundException("No matching manufacturer was found"));
     }
 
-    public Manufacturer getManufacturerByAbv(@NotNull String manufacturerAbv){
-
-        return manufacturerRepository.findByAbbreviation(manufacturerAbv)
-                .orElseThrow(() -> new NotFoundException("No matching manufacturer was found"));
-    }
-
     public Manufacturer createManufacturer(@NotNull Manufacturer manufacturer){
+        if(manufacturer.getManufacturerGroup() == null || manufacturer.getManufacturerGroup().isEmpty()){
+            manufacturer.setManufacturerGroup(manufacturer.getManufacturerId());
+        }
         return manufacturerRepository.save(manufacturer);
     }
 
@@ -41,10 +38,11 @@ public class ManufacturerService {
 
         return manufacturerRepository.findById(manufacturerId)
                 .map(newManufacturer -> {
-                    newManufacturer.setAbbreviation(manufacturer.getAbbreviation());
-                    newManufacturer.setName(manufacturer.getName());
+                    newManufacturer.setManufacturerId(manufacturer.getManufacturerId());
+                    newManufacturer.setManufacturerGroup(manufacturer.getManufacturerGroup());
+                    newManufacturer.setShortName(manufacturer.getShortName());
                     newManufacturer.setCountry(manufacturer.getCountry());
-                    newManufacturer.setDisplayName(manufacturer.getDisplayName());
+                    newManufacturer.setFullName(manufacturer.getFullName());
                     return manufacturerRepository.save(newManufacturer);
                 }).orElseThrow(() -> new NotFoundException("No matching manufacturer was found"));
 

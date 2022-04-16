@@ -28,11 +28,6 @@ public class ManufacturerController {
         return manufacturerService.getManufacturerById(manufacturerId);
     }
 
-    @GetMapping("/manufacturers/{abv}")
-    public Manufacturer getManufacturerByAbv(@PathVariable("abv") String manufacturerAbv){
-        return manufacturerService.getManufacturerByAbv(manufacturerAbv);
-    }
-
     @PostMapping("/manufacturers")
     public Manufacturer createManufacturer(@RequestBody Manufacturer manufacturer){
         return manufacturerService.createManufacturer(manufacturer);

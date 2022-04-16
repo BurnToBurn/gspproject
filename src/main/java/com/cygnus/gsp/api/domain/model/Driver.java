@@ -1,6 +1,9 @@
 package com.cygnus.gsp.api.domain.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -11,7 +14,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(exclude = {"driverId","country"})
 @Accessors(chain = true)
 @NoArgsConstructor
 @Entity
@@ -25,29 +27,26 @@ public class Driver implements Serializable {
     @Column(nullable = false,unique = true)
     private String inputName;
     @Min(1)
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String firstName;
     @Min(1)
-    @Column(nullable = true)
     private String middleName;
     @Min(1)
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String lastName;
     @Min(1)
-    @Column(nullable = true)
     private String generationCode;
     @Min(1)
-    @Column(nullable = true)
     private String country;
 
     public String getDisplayName() {
-        if (firstName != null && lastName != null && !firstName.isEmpty() && !lastName.isEmpty())
+        if (firstName != null && lastName != null)
             return firstName + " " + middleName + " " + lastName + " " + generationCode;
         else
             return inputName;
     }
 
-    private void splitName(String inputName){
+    void splitName(String inputName){
 
         if(inputName != null && inputName.length() > 0){
             String[] splitName = inputName.trim().split("\\s+");

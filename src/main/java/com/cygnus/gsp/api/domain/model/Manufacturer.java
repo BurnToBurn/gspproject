@@ -1,15 +1,21 @@
 package com.cygnus.gsp.api.domain.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(exclude = {"manufacturerId","country","displayName"})
 @Accessors(chain = true)
 @NoArgsConstructor
 @Entity
@@ -17,19 +23,15 @@ import javax.validation.constraints.NotNull;
 public class Manufacturer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long manufacturerId;
-    private String displayName;
+    private String manufacturerId;
+    @Min(1)
     @NotNull
     @Column(nullable = false)
-    private String name;
-    @NotNull
-    @Column(unique = true, nullable = false)
-    private String abbreviation;
+    private String manufacturerGroup;
+    @Min(1)
+    private String shortName;
+    @Min(1)
+    private String fullName;
+    @Min(1)
     private String country;
-
-    public Manufacturer(@NotNull String name, @NotNull String abbreviation) {
-        this.name = name;
-        this.abbreviation = abbreviation;
-    }
 }
