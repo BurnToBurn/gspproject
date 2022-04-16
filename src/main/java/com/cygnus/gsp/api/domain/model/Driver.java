@@ -41,10 +41,23 @@ public class Driver implements Serializable {
     private Integer driverNumber;
 
     public String getDisplayName() {
-        if (firstName != null && lastName != null)
-            return firstName + " " + middleName + " " + lastName + " " + generationCode;
-        else
-            return inputName;
+        StringBuilder stringBuilder;
+        if (firstName != null && lastName != null) {
+            stringBuilder = new StringBuilder();
+            stringBuilder.append(firstName);
+            stringBuilder.append(" ");
+            if(middleName != null && !middleName.isEmpty()) {
+                stringBuilder.append(middleName);
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append(lastName);
+            if(generationCode != null && !generationCode.isEmpty()) {
+                stringBuilder.append(" ");
+                stringBuilder.append(generationCode);
+            }
+            return stringBuilder.toString();
+        }
+        return inputName;
     }
 
     void splitName(String inputName){
