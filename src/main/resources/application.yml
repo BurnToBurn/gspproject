@@ -15,4 +15,5 @@ spring:
     console:
       enabled: true
   application:
+    version: @project.version@
     name: GSPStats
