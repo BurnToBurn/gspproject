@@ -20,7 +20,16 @@ import javax.validation.constraints.NotNull;
 public class DropSystem {
 
     public enum Method {
-        HALF,FULL
+        HALF(2),FULL(1);
+
+        private final int split;
+        Method(int split) {
+            this.split = split;
+        }
+
+        public int getSplit() {
+            return split;
+        }
     }
 
     public enum Order {

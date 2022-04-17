@@ -38,5 +38,6 @@ public class FinishedPosition implements Position {
     private String detail;
     @NotNull
     private boolean classified = true;
-
+    @Transient
+    private boolean dropped = false;
 }
