@@ -26,6 +26,7 @@ public class PointSystem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "point_system_id")
     private Long pointSystemId;
     @NotNull
     @Column(unique = true)
@@ -36,7 +37,11 @@ public class PointSystem {
     private DropSystem dropSystem;
     @NotNull
     @ElementCollection
-    private HashMap<Integer,BigDecimal> positionPointMap;
+    @MapKeyColumn(name = "position")
+    @Column(name = "points")
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @CollectionTable(name = "position_points", joinColumns = @JoinColumn(name="point_system_id"))
+    private Map<Integer,BigDecimal> positionPointMap;
     @NotNull
     @Min(0)
     @Column(nullable = false)
@@ -56,7 +61,7 @@ public class PointSystem {
     //TODO will need a point system builder
 
 
-    public HashMap<Integer, BigDecimal> getPositionPointMap() {
+    public Map<Integer, BigDecimal> getPositionPointMap() {
         if(positionPointMap == null){
             this.positionPointMap = new HashMap<>();
         }
