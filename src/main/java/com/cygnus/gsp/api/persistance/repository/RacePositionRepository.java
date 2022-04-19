@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface RacePositionRepository extends JpaRepository<FinishedPosition,Long> {
-    Optional<List<FinishedPosition>> findAllByDriverId(Long driverId);
+
 }

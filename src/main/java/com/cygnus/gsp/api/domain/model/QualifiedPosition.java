@@ -22,6 +22,7 @@ public class QualifiedPosition implements Position{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "qualified_position_id")
     private Long positionId;
     @NotNull
     @ManyToOne

@@ -26,6 +26,10 @@ public class Season {
     private Long seasonId;
     @NotNull
     private String seasonName;
+    @NotNull
+    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "race_id")
     private List<Race> raceList;
     @NotNull
     @Min(1)

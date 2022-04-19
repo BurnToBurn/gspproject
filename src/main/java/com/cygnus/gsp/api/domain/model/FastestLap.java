@@ -21,6 +21,7 @@ public class FastestLap implements Position{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "fastest_lap_position_id")
     private Long positionId;
     @NotNull
     @ManyToOne

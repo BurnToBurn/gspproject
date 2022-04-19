@@ -45,6 +45,7 @@ public class Race {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "race_id")
     private Long raceId;
     @NotNull
     @Min(1)
@@ -57,11 +58,13 @@ public class Race {
     @OneToOne
     @JoinColumn(name = "fastest_lap_position_id")
     private FastestLap fastestLap;
-    @ManyToOne
-    @JoinColumn(name = "position_id")
+    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "qualified_position_id")
     private List<QualifiedPosition> qualifiedPositionList;
-    @ManyToOne
-    @JoinColumn(name = "position_id")
+    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "finished_position_id")
     private List<FinishedPosition> finishedPositionList;
     @NotNull
     @Min(1)

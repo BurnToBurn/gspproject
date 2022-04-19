@@ -32,15 +32,11 @@ public class PointSystem {
     @Column(unique = true)
     private String pointSystemName;
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "drop_system_Id",nullable = false)
     private DropSystem dropSystem;
     @NotNull
     @ElementCollection
-    @MapKeyColumn(name = "position")
-    @Column(name = "points")
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-    @CollectionTable(name = "position_points", joinColumns = @JoinColumn(name="point_system_id"))
     private Map<Integer,BigDecimal> positionPointMap;
     @NotNull
     @Min(0)

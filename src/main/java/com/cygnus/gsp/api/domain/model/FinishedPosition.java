@@ -21,6 +21,7 @@ public class FinishedPosition implements Position {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "finished_position_id")
     private Long positionId;
     @NotNull
     @ManyToOne
