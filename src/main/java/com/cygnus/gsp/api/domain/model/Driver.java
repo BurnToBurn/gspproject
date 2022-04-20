@@ -20,12 +20,18 @@ import java.io.Serializable;
 @Table(name = "driver")
 public class Driver implements Serializable {
 
+    public enum Generation{
+        SR,JR,II,III,IV,V,VI,VII,VIII
+    }
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long driverId;
     @NotNull
     @Column(nullable = false,unique = true)
-    private String inputName;
+    private String driverName;
     @Min(1)
     @Column(nullable = false)
     private String firstName;
@@ -35,12 +41,15 @@ public class Driver implements Serializable {
     @Column(nullable = false)
     private String lastName;
     @Min(1)
-    private String generationCode;
+    private String gender;
+    @Min(1)
+    private Generation generationCode;
     @Min(1)
     private String country;
-    private Integer driverNumber;
+    private Integer driverNumber=0;
 
     public String getDisplayName() {
+        splitName(driverName);
         StringBuilder stringBuilder;
         if (firstName != null && lastName != null) {
             stringBuilder = new StringBuilder();
@@ -51,24 +60,24 @@ public class Driver implements Serializable {
                 stringBuilder.append(" ");
             }
             stringBuilder.append(lastName);
-            if(generationCode != null && !generationCode.isEmpty()) {
+            if(generationCode != null) {
                 stringBuilder.append(" ");
                 stringBuilder.append(generationCode);
             }
             return stringBuilder.toString();
         }
-        return inputName;
+        return driverName;
     }
 
-    void splitName(String inputName){
+    void splitName(String driverName){
 
-        if(inputName != null && inputName.length() > 0){
-            String[] splitName = inputName.trim().split("\\s+");
-            if(splitName.length > 1) {
+        if(driverName != null && !driverName.isEmpty()){
+            String[] splitName = driverName.trim().split("\\s+");
+            if(splitName.length > 0) {
                 this.firstName = splitName[0];
+            }
+            if(splitName.length > 1) {
                 this.lastName = splitName[1];
-            }else {
-                throw new IllegalArgumentException();
             }
         }
     }

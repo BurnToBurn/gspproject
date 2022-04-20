@@ -20,33 +20,32 @@ class DriverTest {
 
     @Test
     void splitNamesNull(){
-        assertThrows(IllegalArgumentException.class, () -> {
-            driver.splitName(null);
-        });
-
+        driver.splitName(null);
+        assertNull(driver.getFirstName());
+        assertNull(driver.getLastName());
     }
 
     @Test
     void splitNamesEmpty(){
-        assertThrows(IllegalArgumentException.class, () -> {
-            driver.splitName("");
-        });
 
+        driver.splitName("");
+        assertNull(driver.getFirstName());
+        assertNull(driver.getLastName());
     }
 
     @ParameterizedTest
     @CsvSource({
-            "D. Hulme, D,Hulme",
+            "D. Hulme,D.,Hulme",
             "Bano,Bano,null",
-            "Derick Rock, Derick,Rock",
-            ". Hulme,'',Hulme",
-            "D. , D,''",
-            "Could Be a Long Name,Could,Be a Long Name"
+            "Derick Rock,Derick,Rock",
+            ". Hulme,'.',Hulme",
+            "D. ,D.,null",
+            "Could Be a Long Name,Could,Be"
     })
     void splitNamesValues(String request, @ConvertWith(NullableConverter.class) String first, @ConvertWith(NullableConverter.class) String last){
 
         driver.splitName(request);
-        assertEquals(driver.getFirstName(),first);
-        assertEquals(driver.getLastName(),last);
+        assertEquals(first,driver.getFirstName());
+        assertEquals(last,driver.getLastName());
     }
 }

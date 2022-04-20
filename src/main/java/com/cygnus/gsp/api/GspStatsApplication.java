@@ -2,9 +2,9 @@ package com.cygnus.gsp.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-@EnableSwagger2
+@EnableWebMvc
 @SpringBootApplication
 public class GspStatsApplication {
 

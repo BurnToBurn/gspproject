@@ -44,7 +44,7 @@ public class Track {
     private String fullName;
     @NotNull
     @Column(unique = true)
-    private String inputName;
+    private String trackName;
     @Min(1)
     private String country;
     private Surface surface = Surface.ASPHALT;
@@ -53,7 +53,7 @@ public class Track {
 
     public String getFullName() {
         if(fullName == null) {
-            return inputName;
+            return trackName;
         }
 
         return fullName;

@@ -38,7 +38,7 @@ public class TrackService {
     public Track updateTrackById(@RequestBody @NotNull Track track, @PathVariable @NotNull Long id){
         return trackRepository.findById(id)
                 .map(newTrack -> {
-                    newTrack.setInputName(track.getInputName());
+                    newTrack.setTrackName(track.getTrackName());
                     newTrack.setCountry(track.getCountry());
                     newTrack.setTurns(track.getTurns());
                     newTrack.setSurface(track.getSurface());
