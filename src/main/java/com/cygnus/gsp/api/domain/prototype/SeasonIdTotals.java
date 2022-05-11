@@ -14,4 +14,6 @@ public class SeasonIdTotals {
     private HashMap<Integer,Integer> positionTotals;
     private Integer poleTotal;
     private Integer fastestLapTotal;
+
+
 }
