@@ -1,15 +1,13 @@
 package com.cygnus.gsp.api.domain.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -20,11 +18,9 @@ import java.io.Serializable;
 @Table(name = "driver")
 public class Driver implements Serializable {
 
-    public enum Generation{
+    public enum Generation {
         SR,JR,II,III,IV,V,VI,VII,VIII
     }
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,5 +76,22 @@ public class Driver implements Serializable {
                 this.lastName = splitName[1];
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Driver driver = (Driver) o;
+        return driverName.equals(driver.driverName)
+                && Objects.equals(firstName, driver.firstName)
+                && Objects.equals(middleName, driver.middleName)
+                && Objects.equals(lastName, driver.lastName)
+                && generationCode == driver.generationCode;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(driverName, firstName, middleName, lastName, generationCode);
     }
 }

@@ -11,13 +11,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 @Setter
-@ToString
 @Accessors(chain = true)
 @NoArgsConstructor
 @Entity
@@ -33,12 +30,20 @@ public class Race {
         GRANDPRIX("Grand Prix");
 
         private final String description;
+        private static final Map<String,Mode> mapping = new HashMap<>();
+        static {
+            Arrays.stream(Mode.values()).forEach(mode -> mapping.put(mode.getDescription(),mode));
+        }
         Mode(String description) {
             this.description = description;
         }
 
         public String getDescription() {
             return description;
+        }
+
+        public static Mode forDescription(final String description){
+            return mapping.get(description);
         }
     }
 
@@ -92,4 +97,19 @@ public class Race {
                 .findFirst();
     }
 
+    @Override
+    public String toString() {
+        return "Race{" +
+                "raceId=" + raceId +
+                ", round=" + round +
+                ", track=" + track +
+                ", mode=" + mode +
+                ", date=" + date +
+                ", fastestLap=" + fastestLap +
+                ", qualifiedPositionList=" + qualifiedPositionList +
+                ", finishedPositionList=" + finishedPositionList +
+                ", laps=" + laps +
+                ", time=" + time +
+                '}';
+    }
 }

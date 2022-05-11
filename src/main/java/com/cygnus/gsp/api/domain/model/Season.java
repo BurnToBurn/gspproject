@@ -3,7 +3,6 @@ package com.cygnus.gsp.api.domain.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -14,7 +13,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @Accessors(chain = true)
 @NoArgsConstructor
 @Entity
@@ -34,9 +32,16 @@ public class Season {
     @NotNull
     @Min(1)
     private Integer scheduledEvents;
+
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "point_system_id")
-    private PointSystem pointSystem;
+    @JoinColumn(name = "driver_point_system_id")
+    private PointSystem driverPointSystem;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "manufacturer_point_system_id")
+    private PointSystem manufacturerPointSystem;
 
     public List<Race> getRaceList() {
 
@@ -53,5 +58,16 @@ public class Season {
         }
 
         return scheduledEvents;
+    }
+
+    @Override
+    public String toString() {
+        return "Season{" +
+                "seasonId=" + seasonId +
+                ", seasonName='" + seasonName + '\'' +
+                ", raceList=" + raceList +
+                ", scheduledEvents=" + scheduledEvents +
+                ", pointSystem=" + driverPointSystem +
+                '}';
     }
 }

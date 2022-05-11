@@ -70,4 +70,18 @@ public class PointSystem {
                 .map(Map.Entry::getValue)
                 .findFirst().orElse(BigDecimal.ZERO);
     }
+
+    @Override
+    public String toString() {
+        return "PointSystem{" +
+                "pointSystemId=" + pointSystemId +
+                ", pointSystemName='" + pointSystemName + '\'' +
+                ", dropSystem=" + dropSystem +
+                ", positionPointMap=" + positionPointMap +
+                ", fastestLapPoint=" + fastestLapPoint +
+                ", polePoint=" + polePoint +
+                ", manufacturerCalculation=" + manufacturerCalculation +
+                ", manufacturerCount=" + manufacturerCount +
+                '}';
+    }
 }
